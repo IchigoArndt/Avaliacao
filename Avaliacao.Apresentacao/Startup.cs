@@ -3,12 +3,14 @@ using Avaliacao.Aplicacao.Produtos;
 using Avaliacao.Repositorio;
 using Avaliacao.Repositorio.Repositorios.FornecedoresRepositorio;
 using Avaliacao.Repositorio.Repositorios.ProdutosRepositorio;
+using log4net.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Data.Entity;
@@ -46,6 +48,9 @@ namespace Avaliacao.Apresentacao
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Avaliacao.Apresentacao", Version = "v1" });
             });
+
+            services.AddLogging(x => x.AddLog4Net("log.config"));
+            XmlConfigurator.Configure();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +62,7 @@ namespace Avaliacao.Apresentacao
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Avaliacao.Apresentacao v1"));
             }
+
 
             app.UseHttpsRedirection();
 
