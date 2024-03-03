@@ -16,7 +16,7 @@ namespace Avaliacao.Dominio.Fornecedores.Validadores
                                                  .MinimumLength(10).WithMessage("A descrição do fornecedor deve conter no minimo 10 caracteres");
 
             RuleFor(fornecedor => fornecedor.CNPJ).NotEmpty().WithMessage("O CNPJ do fornecedor não pode ser vazio")
-                                     .MaximumLength(14).WithMessage("O CNPJ do fornecedor não pode ultrapassar os 16 caracteres");
+                                     .MaximumLength(14).WithMessage("O CNPJ do fornecedor não pode ultrapassar os 14 caracteres");
         }
     }
 }

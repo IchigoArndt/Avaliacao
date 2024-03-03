@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Data.Entity;
 
 namespace Avaliacao.Apresentacao
 {
@@ -30,9 +31,12 @@ namespace Avaliacao.Apresentacao
             services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
             services.AddScoped<IFornecedorServico, FornecedorServico>();
             services.AddScoped<IFornecedorRepositorio, FornecedorRepositorio>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<Context>(options =>
             {
+                var con = Configuration.GetConnectionString("Connection");
+
                 options.UseSqlServer(Configuration.GetConnectionString("Connection"));
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
@@ -59,6 +63,12 @@ namespace Avaliacao.Apresentacao
             app.UseRouting();
 
             app.UseAuthorization();
+
+            var scope = app.ApplicationServices.CreateScope();
+
+            var context = scope.ServiceProvider.GetRequiredService<Context>();
+
+            context.Database.Migrate();
 
             app.UseEndpoints(endpoints =>
             {
